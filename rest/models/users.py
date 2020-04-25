@@ -1,4 +1,5 @@
 from flask_login import UserMixin
+from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import db
@@ -16,6 +17,8 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(200),
                          unique=False,
                          nullable=False)
+    account_id = relationship("FinanceAccount",
+                              back_populates="user_id")
 
     def set_password(self, password):
         self.password = generate_password_hash(password, method='sha256')
